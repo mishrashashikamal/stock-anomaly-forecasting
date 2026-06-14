@@ -75,3 +75,31 @@ col3.metric("Total Return",
 col4.metric("Total Trading Days", len(df))
 
 st.markdown("---")
+
+# Charts Row 1
+st.subheader("📈 Price & Volume Analysis")
+col1, col2 = st.columns(2)
+
+with col1:
+    fig, ax = plt.subplots(figsize=(10, 4))
+    ax.plot(df['Date'], df['Close'], color='steelblue', linewidth=1.5)
+    ax.set_title(f'{ticker} Closing Price', fontsize=14)
+    ax.set_xlabel('Date')
+    ax.set_ylabel('Price (USD)')
+    ax.grid(True, alpha=0.3)
+    plt.tight_layout()
+    st.pyplot(fig)
+    plt.close()
+
+with col2:
+    fig, ax = plt.subplots(figsize=(10, 4))
+    ax.bar(df['Date'], df['Volume'], color='orange', alpha=0.6)
+    ax.set_title(f'{ticker} Trading Volume', fontsize=14)
+    ax.set_xlabel('Date')
+    ax.set_ylabel('Volume')
+    ax.grid(True, alpha=0.3)
+    plt.tight_layout()
+    st.pyplot(fig)
+    plt.close()
+
+st.markdown("---")
