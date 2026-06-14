@@ -103,3 +103,45 @@ with col2:
     plt.close()
 
 st.markdown("---")
+
+# Anomaly Detection
+st.subheader("🚨 Anomaly Detection")
+
+# Apply Isolation Forest
+features = df[['Close', 'Volume']].copy()
+iso_forest = IsolationForest(contamination=contamination, random_state=42)
+df['Anomaly'] = iso_forest.fit_predict(features)
+anomalies = df[df['Anomaly'] == -1]
+
+# Anomaly Chart
+fig, ax = plt.subplots(figsize=(14, 5))
+ax.plot(df['Date'], df['Close'], 
+        color='steelblue', linewidth=1.5, label='Normal')
+ax.scatter(anomalies['Date'], anomalies['Close'], 
+           color='red', s=50, zorder=5, label='Anomaly')
+ax.set_title(f'{ticker} Anomaly Detection', fontsize=14)
+ax.set_xlabel('Date')
+ax.set_ylabel('Price (USD)')
+ax.legend()
+ax.grid(True, alpha=0.3)
+plt.tight_layout()
+st.pyplot(fig)
+plt.close()
+
+# Anomaly Stats
+col1, col2 = st.columns(2)
+col1.metric("Total Anomalies Detected", len(anomalies))
+col2.metric("Anomaly Percentage", f"{len(anomalies)/len(df)*100:.1f}%")
+
+# Anomaly Table
+with st.expander("🔍 View Anomaly Details"):
+    st.dataframe(
+        anomalies[['Date', 'Close', 'Volume', 'Daily_Return']]
+        .reset_index(drop=True)
+        .style.format({
+            'Close': '${:.2f}',
+            'Daily_Return': '{:.2f}%'
+        })
+    )
+
+st.markdown("---")
