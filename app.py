@@ -233,3 +233,41 @@ st.dataframe(
 )
 
 st.markdown("---")
+
+# Summary Section
+st.subheader("📋 Complete Analysis Summary")
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.markdown("**📈 Price Analysis**")
+    st.write(f"Start Price: ${df['Close'].iloc[0]:.2f}")
+    st.write(f"End Price: ${df['Close'].iloc[-1]:.2f}")
+    st.write(f"Total Return: {((df['Close'].iloc[-1] - df['Close'].iloc[0]) / df['Close'].iloc[0] * 100):.2f}%")
+    st.write(f"Total Trading Days: {len(df)}")
+
+with col2:
+    st.markdown("**🚨 Anomaly Analysis**")
+    st.write(f"Total Anomalies: {len(anomalies)}")
+    st.write(f"Anomaly Rate: {len(anomalies)/len(df)*100:.1f}%")
+    st.write(f"Max Daily Gain: {df['Daily_Return'].max():.2f}%")
+    st.write(f"Max Daily Loss: {df['Daily_Return'].min():.2f}%")
+
+with col3:
+    st.markdown("**🔮 Forecast Analysis**")
+    st.write(f"Current Price: ${df['Close'].iloc[-1]:.2f}")
+    st.write(f"7-Day Forecast: ${forecast_df['Forecasted_Price'].iloc[-1]:.2f}")
+    st.write(f"Forecast Change: {((forecast_df['Forecasted_Price'].iloc[-1] - df['Close'].iloc[-1]) / df['Close'].iloc[-1] * 100):.2f}%")
+    st.write(f"Model: ARIMA(5,1,0)")
+
+st.markdown("---")
+
+# Footer
+st.markdown("""
+<div style='text-align: center; color: gray; padding: 20px;'>
+    <p>Built by <b>Shashi Kamal Mishra</b> | 
+    <a href='https://github.com/mishrashashikamal' target='_blank'>GitHub</a> | 
+    <a href='https://www.linkedin.com/in/shashi-kamal-mishra-05609228b/' target='_blank'>LinkedIn</a></p>
+    <p>Stock Market Anomaly Detection & Trend Forecasting</p>
+</div>
+""", unsafe_allow_html=True)
