@@ -145,3 +145,40 @@ with st.expander("🔍 View Anomaly Details"):
     )
 
 st.markdown("---")
+
+
+# Moving Averages & Daily Returns
+st.subheader("📉 Moving Averages & Daily Returns")
+col1, col2 = st.columns(2)
+
+with col1:
+    fig, ax = plt.subplots(figsize=(10, 4))
+    ax.plot(df['Date'], df['Close'],
+            color='steelblue', linewidth=1, label='Price', alpha=0.7)
+    ax.plot(df['Date'], df['MA20'],
+            color='orange', linewidth=2, label='20-Day MA')
+    ax.plot(df['Date'], df['MA50'],
+            color='red', linewidth=2, label='50-Day MA')
+    ax.set_title(f'{ticker} Moving Averages', fontsize=14)
+    ax.set_xlabel('Date')
+    ax.set_ylabel('Price (USD)')
+    ax.legend()
+    ax.grid(True, alpha=0.3)
+    plt.tight_layout()
+    st.pyplot(fig)
+    plt.close()
+
+with col2:
+    fig, ax = plt.subplots(figsize=(10, 4))
+    sns.histplot(df['Daily_Return'].dropna(), bins=50,
+                 color='steelblue', kde=True, ax=ax)
+    ax.axvline(x=0, color='red', linestyle='--', alpha=0.7)
+    ax.set_title(f'{ticker} Daily Returns Distribution', fontsize=14)
+    ax.set_xlabel('Daily Return (%)')
+    ax.set_ylabel('Frequency')
+    ax.grid(True, alpha=0.3)
+    plt.tight_layout()
+    st.pyplot(fig)
+    plt.close()
+
+st.markdown("---")
