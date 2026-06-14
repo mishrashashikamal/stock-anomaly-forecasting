@@ -182,3 +182,54 @@ with col2:
     plt.close()
 
 st.markdown("---")
+
+# ARIMA Forecast
+st.subheader("🔮 7-Day Price Forecast (ARIMA)")
+
+with st.spinner("Training ARIMA model..."):
+    # Prepare data
+    close_prices = df['Close'].values
+    train_data = close_prices[-100:]
+
+    # Train ARIMA
+    model = ARIMA(train_data, order=(5, 1, 0))
+    fitted_model = model.fit()
+
+    # Forecast
+    forecast = fitted_model.forecast(steps=7)
+    last_date = df['Date'].iloc[-1]
+    forecast_dates = pd.date_range(start=last_date, periods=8, freq='B')[1:]
+
+    forecast_df = pd.DataFrame({
+        'Date': forecast_dates,
+        'Forecasted_Price': forecast
+    })
+
+# Forecast Chart
+fig, ax = plt.subplots(figsize=(14, 5))
+ax.plot(df['Date'].iloc[-60:], df['Close'].iloc[-60:],
+        color='steelblue', linewidth=2, label='Actual Price')
+ax.plot(forecast_df['Date'], forecast_df['Forecasted_Price'],
+        color='green', linewidth=2, linestyle='--',
+        marker='o', markersize=6, label='7-Day Forecast')
+ax.axvline(x=df['Date'].iloc[-1], color='red',
+           linestyle='--', alpha=0.5, label='Forecast Start')
+ax.set_title(f'{ticker} — 7 Day Price Forecast', fontsize=14)
+ax.set_xlabel('Date')
+ax.set_ylabel('Price (USD)')
+ax.legend()
+ax.grid(True, alpha=0.3)
+plt.tight_layout()
+st.pyplot(fig)
+plt.close()
+
+# Forecast Table
+st.markdown("**📅 Forecasted Prices:**")
+st.dataframe(
+    forecast_df.style.format({
+        'Forecasted_Price': '${:.2f}'
+    }),
+    use_container_width=True
+)
+
+st.markdown("---")
