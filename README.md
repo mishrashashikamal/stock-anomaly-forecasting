@@ -23,8 +23,7 @@ A data science project that detects anomalies in stock market data and forecasts
 - ✅ Interactive Streamlit dashboard
 
 ## 🚀 Live Demo
-Coming soon...
-
+👉 [Click here to view the live app](https://mishrashashikamal-stock-anomaly-forecasting-app-fwetto.streamlit.app/)
 ## 👤 Author
 **Shashi Kamal Mishra**  
 [GitHub](https://github.com/mishrashashikamal) | [LinkedIn](https://www.linkedin.com/in/shashi-kamal-mishra-05609228b/)
